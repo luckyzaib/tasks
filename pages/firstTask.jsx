@@ -1,7 +1,8 @@
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { Table, Loader, Modal } from "../Components";
-import { getEntries } from "../services/entryService";
+import { getEntries, setEntriesToLocalStorage } from "../services/entryService";
+import { getDeepCopy } from "../services/utils";
 
 const firstTask = () => {
   const [entries, setEntries] = useState([]);
@@ -29,6 +30,14 @@ const firstTask = () => {
     setIsEditModal(true);
   };
 
+  const onSubmit = (values) => {
+    let valuesCopy = getDeepCopy(entries);
+    valuesCopy[index] = values;
+    setEntries(valuesCopy);
+    setEntriesToLocalStorage(valuesCopy);
+    setIsEditModal(false);
+  };
+
   return (
     <>
       <h1>With Entries Api</h1>
@@ -39,7 +48,7 @@ const firstTask = () => {
             <Modal
               isOpen={isEditModal}
               data={focusedData}
-              index={index}
+              onSubmit={onSubmit}
               onCancel={() => setIsEditModal(false)}
             />
           )}

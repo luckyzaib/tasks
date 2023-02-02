@@ -6,7 +6,7 @@ export const getEntries = async () => {
     }
     return entries;
   } catch (error) {
-    alert(error);
+    console.log("error", error);
   }
 };
 
@@ -14,9 +14,17 @@ const getDataFromLocalStorage = () => {
   return JSON.parse(localStorage.getItem("entries"));
 };
 
-const getDataFromAPI = async () => {
-  const res = await fetch("https://api.publicapis.org/entries");
-  const data = await res.json();
-  localStorage.setItem("entries", JSON.stringify(data?.entries || []));
-  return data?.entries || [];
+export const getDataFromAPI = async () => {
+  try {
+    const res = await fetch("https://api.publicapis.org/entries");
+    const data = await res.json();
+    setEntriesToLocalStorage(data?.entries);
+    return data?.entries || [];
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const setEntriesToLocalStorage = (entries) => {
+  localStorage.setItem("entries", JSON.stringify(entries));
 };

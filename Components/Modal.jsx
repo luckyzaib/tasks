@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button, Form, Modal as AntdModal } from "antd";
 import { FormInput } from "./Form/FormInput";
-const Modal = ({ isOpen = false,  onCancel, data }) => {
+const Modal = ({ isOpen = false, onCancel, data, onSubmit }) => {
   const [values, setValues] = useState(data);
 
-  const onSubmit = (e) => {
+  const onFinish = (e) => {
     e.preventDefault();
-    console.log("finish", values);
+    onSubmit(values);
   };
 
   const handleTextChange = (e) => {
@@ -18,7 +18,7 @@ const Modal = ({ isOpen = false,  onCancel, data }) => {
 
   return (
     <AntdModal open={isOpen} onCancel={onCancel} footer={null}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onFinish}>
         <FormInput onChange={handleTextChange} label="API" value={values.API} />
         <FormInput
           onChange={handleTextChange}
