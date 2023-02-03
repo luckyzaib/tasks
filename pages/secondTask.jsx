@@ -1,11 +1,11 @@
-import { Typography, Button } from "antd";
+import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { Table, Loader, EntriesFormModal } from "../Components";
-import { getEntries } from "../services/entryService";
+import { Table, Loader, UniversityFormModal } from "../Components";
+import { getUniversityList } from "../services/entryService";
 import { getDeepCopy, setDataToLocalStorage } from "../services/utils";
 
-const firstTask = () => {
-  const [entries, setEntries] = useState([]);
+const secondTask = () => {
+  const [universityList, setUniversityList] = useState([]);
   const [error, setError] = useState("");
   const [isEditModal, setIsEditModal] = useState(false);
   const [focusedData, setFocusedData] = useState({});
@@ -16,47 +16,47 @@ const firstTask = () => {
   }, []);
 
   const getData = async () => {
-    const _entries = await getEntries();
-    if (_entries?.length > 0) {
-      setEntries(_entries);
+    const _universityList = await getUniversityList();
+    if (_universityList.length > 0) {
+      setUniversityList(_universityList);
     } else {
       setError("No record found");
     }
   };
 
   const handleEdit = (_index) => {
-    setFocusedData({ ...entries[_index] });
+    setFocusedData({ ...universityList[_index] });
     setIndex(_index);
     setIsEditModal(true);
   };
 
   const onSubmit = (values) => {
-    let valuesCopy = getDeepCopy(entries);
+    let valuesCopy = getDeepCopy(universityList);
     valuesCopy[index] = values;
-    setEntries(valuesCopy);
-    setDataToLocalStorage("entries", valuesCopy);
+    setUniversityList(valuesCopy);
+    setDataToLocalStorage("universities", valuesCopy);
     setIsEditModal(false);
   };
 
   return (
     <>
-      <h1>Entries Api</h1>
-      {entries.length > 0 ? (
+      <h1>Universities API</h1>
+
+      {universityList.length > 0 ? (
         <>
           <Table
+            data={universityList}
+            handleEdit={handleEdit}
             columns={[
-              ...Object.keys(entries[0]).map((key) => ({
-                title: key.toUpperCase(),
+              ...Object.keys(universityList[0]).map((key) => ({
+                title: key.toUpperCase().replaceAll("_", " "),
                 key: key,
                 dataIndex: key,
-                render: (val) => String(val),
               })),
             ]}
-            data={entries}
-            handleEdit={handleEdit}
           />
           {isEditModal && (
-            <EntriesFormModal
+            <UniversityFormModal
               isOpen={isEditModal}
               data={focusedData}
               onSubmit={onSubmit}
@@ -73,4 +73,4 @@ const firstTask = () => {
   );
 };
 
-export default firstTask;
+export default secondTask;

@@ -1,11 +1,17 @@
 import { Input } from "antd";
 import React from "react";
 
-const FormInput = ({ label, type = "text", style = {}, ...props }) => {
+const FormInput = ({ label, name, type = "text", style = {}, ...props }) => {
   return (
-    <div >
+    <div>
       <label htmlFor={label}>{label}</label>
-      <Input type={type} name={label} id={label} {...props} style={style} />
+      <Input
+        type={type}
+        name={name || label}
+        id={label}
+        {...props}
+        style={style}
+      />
     </div>
   );
 };

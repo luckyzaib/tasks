@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Space, Table as AntdTable } from "antd";
 
-const Table = ({ data, handleEdit }) => {
+const Table = ({ data, handleEdit, columns = [] }) => {
   const [page, setPage] = useState(1);
   const [paginationSize, setPaginationSize] = useState(25);
   return (
@@ -17,12 +17,7 @@ const Table = ({ data, handleEdit }) => {
         showSizeChanger: true,
       }}
       columns={[
-        ...Object.keys(data[0]).map((key) => ({
-          title: key.toUpperCase(),
-          key: key,
-          dataIndex: key,
-          render: (value) => String(value),
-        })),
+        ...columns,
         {
           title: "Action",
           key: "action",
