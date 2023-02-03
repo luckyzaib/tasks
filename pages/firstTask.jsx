@@ -34,7 +34,7 @@ const firstTask = () => {
     let valuesCopy = getDeepCopy(entries);
     valuesCopy[index] = values;
     setEntries(valuesCopy);
-    setEntriesToLocalStorage(valuesCopy);
+    setEntriesToLocalStorage("entries", valuesCopy);
     setIsEditModal(false);
   };
 

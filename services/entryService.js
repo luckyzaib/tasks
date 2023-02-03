@@ -1,6 +1,6 @@
 export const getEntries = async () => {
   try {
-    let entries = getDataFromLocalStorage();
+    let entries = getDataFromLocalStorage("entries");
     if (!entries) {
       entries = await getDataFromAPI();
     }
@@ -10,21 +10,21 @@ export const getEntries = async () => {
   }
 };
 
-const getDataFromLocalStorage = () => {
-  return JSON.parse(localStorage.getItem("entries"));
+const getDataFromLocalStorage = (key) => {
+  return JSON.parse(localStorage.getItem(key));
 };
 
 export const getDataFromAPI = async () => {
   try {
     const res = await fetch("https://api.publicapis.org/entries");
     const data = await res.json();
-    setEntriesToLocalStorage(data?.entries);
+    setEntriesToLocalStorage("entries", data?.entries);
     return data?.entries || [];
   } catch (error) {
     console.log("error", error);
   }
 };
 
-export const setEntriesToLocalStorage = (entries) => {
-  localStorage.setItem("entries", JSON.stringify(entries));
+export const setEntriesToLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
 };
